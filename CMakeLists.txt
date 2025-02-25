@@ -75,35 +75,39 @@ write_basic_package_version_file(lunasvgConfigVersion.cmake
     COMPATIBILITY SameMajorVersion
 )
 
-include(GNUInstallDirs)
-install(FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/lunasvg.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lunasvg
-)
+option(LUNASVG_INSTALL "Install LunaSVG" ON)
 
-install(TARGETS lunasvg
-    EXPORT lunasvgTargets
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+if(LUNASVG_INSTALL)
+    include(GNUInstallDirs)
+    install(FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/lunasvg.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lunasvg
+    )
 
-install(EXPORT lunasvgTargets
-    FILE lunasvgTargets.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/lunasvg
-    NAMESPACE lunasvg::
-)
+    install(TARGETS lunasvg
+        EXPORT lunasvgTargets
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
 
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/lunasvgConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/lunasvgConfigVersion.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/lunasvg
-)
+    install(EXPORT lunasvgTargets
+        FILE lunasvgTargets.cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/lunasvg
+        NAMESPACE lunasvg::
+    )
 
-export(EXPORT lunasvgTargets
-    FILE ${CMAKE_CURRENT_BINARY_DIR}/lunasvgTargets.cmake
-    NAMESPACE lunasvg::
-)
+    install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/lunasvgConfig.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/lunasvgConfigVersion.cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/lunasvg
+    )
+
+    export(EXPORT lunasvgTargets
+        FILE ${CMAKE_CURRENT_BINARY_DIR}/lunasvgTargets.cmake
+        NAMESPACE lunasvg::
+    )
+endif()
 
 option(LUNASVG_BUILD_EXAMPLES "Build examples" ON)
 if(LUNASVG_BUILD_EXAMPLES)
