@@ -6,10 +6,10 @@ set(LUNASVG_VERSION_MICRO 0)
 
 project(lunasvg LANGUAGES CXX VERSION ${LUNASVG_VERSION_MAJOR}.${LUNASVG_VERSION_MINOR}.${LUNASVG_VERSION_MICRO})
 
-find_package(plutovg 0.0.4 QUIET)
-if(NOT plutovg_FOUND)
-    add_subdirectory(plutovg)
-endif()
+FetchContent_Declare(plutosvg
+    GIT_REPOSITORY https://github.com/ZeunO8/plutovg.git
+    GIT_TAG main)
+FetchContent_MakeAvailable(plutosvg)
 
 set(lunasvg_sources
     source/lunasvg.cpp
@@ -57,7 +57,7 @@ target_include_directories(lunasvg PUBLIC
     $<INSTALL_INTERFACE:include/lunasvg>
 )
 
-target_link_libraries(lunasvg PRIVATE plutovg::plutovg)
+target_link_libraries(lunasvg PRIVATE plutovg)
 target_compile_definitions(lunasvg PRIVATE LUNASVG_BUILD)
 if(NOT BUILD_SHARED_LIBS)
     target_compile_definitions(lunasvg PUBLIC LUNASVG_BUILD_STATIC)
